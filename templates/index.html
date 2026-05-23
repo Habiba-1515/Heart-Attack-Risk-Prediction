@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Risk Assessment UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .result-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .meter-container { height: 12px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
+        #meterFill { transition: width 1s ease-out; height: 100%; width: 0%; }
+        .risk-low { border-left: 6px solid #10b981; }
+        .risk-high { border-left: 6px solid #ef4444; }
+        .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen py-8 px-4">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+            <div class="bg-indigo-600 p-6 text-white text-center">
+                <h1 class="text-2xl font-bold">Health Indicator Analysis</h1>
+                <p class="text-indigo-200 text-sm font-medium mt-1 tracking-wide uppercase">Student: Habiba Mohamed Hassan</p>
+                <p class="text-indigo-100 mt-1">Please fill out the details below for a risk prediction</p>
+            </div>
+
+            <form id="form" class="p-6 md:p-8 space-y-8">
+                <!-- Section 1: Demographics -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">Biological Sex</label>
+                        <select name="sex" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">Age Category</label>
+                        <select name="age_category" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                            <option value="">Select...</option>
+                            <option value="Age 18 to 24">Age 18 to 24</option>
+                            <option value="Age 25 to 29">Age 25 to 29</option>
+                            <option value="Age 30 to 34">Age 30 to 34</option>
+                            <option value="Age 35 to 39">Age 35 to 39</option>
+                            <option value="Age 40 to 44">Age 40 to 44</option>
+                            <option value="Age 45 to 49">Age 45 to 49</option>
+                            <option value="Age 50 to 54">Age 50 to 54</option>
+                            <option value="Age 55 to 59">Age 55 to 59</option>
+                            <option value="Age 60 to 64">Age 60 to 64</option>
+                            <option value="Age 65 to 69">Age 65 to 69</option>
+                            <option value="Age 70 to 74">Age 70 to 74</option>
+                            <option value="Age 75 to 79">Age 75 to 79</option>
+                            <option value="Age 80 or older">Age 80 or older</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">BMI (10-80)</label>
+                        <input type="number" name="bmi" min="10" max="80" step="0.1" required placeholder="24.5" class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">General Health</label>
+                        <select name="general_health" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                            <option value="">Select...</option>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Very good">Very good</option>
+                            <option value="Good">Good</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Poor">Poor</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">Daily Sleep (Hrs)</label>
+                        <input type="number" name="sleep_hours" min="1" max="24" step="0.5" required placeholder="7.5" class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-4">
+                    <label class="block text-sm font-semibold text-slate-700">Smoking Status</label>
+                    <select name="smoker_status" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                        <option value="">Select...</option>
+                        <option value="Never smoked">Never smoked</option>
+                        <option value="Former smoker">Former smoker</option>
+                        <option value="Current smoker - now smokes some days">Current smoker - now smokes some days</option>
+                        <option value="Current smoker - now smokes every day">Current smoker - now smokes every day</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">Physical Health Days (0-30)</label>
+                        <p class="text-xs text-slate-500">Days you felt physically unwell in past 30 days</p>
+                        <input type="number" name="physical_health_days" min="0" max="30" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-slate-700">Mental Health Days (0-30)</label>
+                        <p class="text-xs text-slate-500">Days you felt mentally unwell in past 30 days</p>
+                        <input type="number" name="mental_health_days" min="0" max="30" required class="w-full rounded-lg border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-slate-50 p-2.5">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4 border-t border-slate-100">
+                    <!-- Function to help create consistent radio groups via template/manual -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Physical Activity (30d)</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="physical_activities" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="physical_activities" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Alcohol Consumer</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="alcohol_drinkers" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="alcohol_drinkers" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had Angina/Heart Dis.</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_angina" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_angina" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had a Stroke</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_stroke" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_stroke" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had Diabetes</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_diabetes" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_diabetes" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had COPD</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_copd" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_copd" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had Kidney Disease</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_kidney_disease" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_kidney_disease" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Had Arthritis</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_arthritis" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="had_arthritis" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Difficulty Walking</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="difficulty_walking" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="difficulty_walking" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-slate-700">Ever had Chest Scan</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="chest_scan" value="1" required class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Yes</span></label>
+                            <label class="flex items-center space-x-2 cursor-pointer"><input type="radio" name="chest_scan" value="0" class="text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">No</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 text-center">
+                    <button type="submit" class="submit-btn inline-flex items-center justify-center px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[220px]">
+                        Calculate Risk Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="result" class="hidden result result-card bg-white rounded-2xl shadow-xl border border-slate-200 p-8 mb-12">
+            <div class="flex flex-col items-center text-center">
+                <div id="resultEmoji" class="text-6xl mb-4"></div>
+                <h2 id="resultTitle" class="text-3xl font-bold text-slate-800 mb-2"></h2>
+                <div class="mb-6 w-full max-w-md">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-sm font-medium text-slate-500 uppercase tracking-wider">Risk Level</span>
+                        <span id="resultPercent" class="text-2xl font-black text-slate-800"></span>
+                    </div>
+                    <div class="meter-container">
+                        <div id="meterFill" class="bg-indigo-500"></div>
+                    </div>
+                </div>
+                <p id="resultDesc" class="text-lg text-slate-600 leading-relaxed max-w-2xl"></p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="mt-8 text-indigo-600 font-semibold hover:text-indigo-800 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Adjust Information
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const submitBtn = form.querySelector('.submit-btn');
+            const resultDiv = document.getElementById('result');
+            const formData = new FormData(form);
+            
+            // Construct the JSON payload
+            const data = {};
+            formData.forEach((value, key) => {
+                // If the key is numeric (BMI, health days, etc), we'll try to parse it
+                // but keep strings as strings for categorical mapping
+                if (['bmi', 'sleep_hours', 'physical_health_days', 'mental_health_days'].includes(key)) {
+                    data[key] = parseFloat(value);
+                } else if (['physical_activities', 'alcohol_drinkers', 'had_angina', 'had_stroke', 'had_diabetes', 'had_copd', 'had_kidney_disease', 'had_arthritis', 'difficulty_walking', 'chest_scan'].includes(key)) {
+                    data[key] = value; // API expects "1" or "0" as string or mapped int; keeping as string per HTML Report
+                } else {
+                    data[key] = value;
+                }
+            });
+
+            // UI Feedback: Loading
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="loading-spinner mr-2"></span> Analyzing data...`;
+            resultDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update DOM based on backend response
+                    renderSuccess(result);
+                } else {
+                    showError(result.error || "An unexpected error occurred.");
+                }
+
+            } catch (err) {
+                showError("Could not connect to the server. Please check your connection.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
+        });
+
+        function renderSuccess(data) {
+            const resultDiv = document.getElementById('result');
+            const emojiEl = document.getElementById('resultEmoji');
+            const titleEl = document.getElementById('resultTitle');
+            const percentEl = document.getElementById('resultPercent');
+            const meterEl = document.getElementById('meterFill');
+            const descEl = document.getElementById('resultDesc');
+
+            // Reset classes
+            resultDiv.classList.remove('risk-low', 'risk-high', 'hidden');
+            meterEl.classList.remove('bg-emerald-500', 'bg-red-500');
+
+            // Set content
+            const prob = data.probability.toFixed(1);
+            percentEl.textContent = prob + '%';
+            
+            if (data.risk === 'low') {
+                resultDiv.classList.add('risk-low');
+                emojiEl.textContent = '🛡️';
+                titleEl.textContent = 'Low Risk Profile';
+                titleEl.className = 'text-3xl font-bold text-emerald-700 mb-2';
+                meterEl.classList.add('bg-emerald-500');
+                descEl.textContent = `Based on the provided health indicators, your calculated risk score is below the threshold of ${data.threshold}%. Maintain your healthy lifestyle habits!`;
+            } else {
+                resultDiv.classList.add('risk-high');
+                emojiEl.textContent = '⚠️';
+                titleEl.textContent = 'Increased Risk Detected';
+                titleEl.className = 'text-3xl font-bold text-red-700 mb-2';
+                meterEl.classList.add('bg-red-500');
+                descEl.textContent = `Based on the provided health indicators, your risk score of ${prob}% is higher than the standard threshold. Consider discussing these indicators with a medical professional.`;
+            }
+
+            // Animate meter
+            setTimeout(() => {
+                meterEl.style.width = prob + '%';
+            }, 50);
+
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function showError(msg) {
+            // Using a non-alert message box logic as requested
+            const errorContainer = document.createElement('div');
+            errorContainer.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded-xl shadow-lg z-50 flex items-center';
+            errorContainer.innerHTML = `
+                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <span>${msg}</span>
+            `;
+            document.body.appendChild(errorContainer);
+            setTimeout(() => errorContainer.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
