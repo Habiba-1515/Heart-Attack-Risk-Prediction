@@ -1,6 +1,6 @@
-# Cardia — Heart Attack Risk Predictor (submission)
+# Cardia — Heart Attack Risk Predictor
 
-> Habiba Mohamed Hassan · 2210019322 · ML coursework, May 2026
+> Habiba Mohamed Hassan · 2210019322 
 
 This is the runnable submission for Cardia. Cardia takes 18 lifestyle and medical-history answers from the CDC's 2022 BRFSS extract and returns a probability that the respondent has ever had a heart attack. The submission ships the cleaned CSV, the executed end-to-end notebook, eleven figures, the trained pipeline plus a tuned threshold, and a Flask + Tailwind web app.
 
@@ -138,5 +138,3 @@ A single `RANDOM_STATE = 42` is threaded through the train/test split and every 
 - ~5 % positives plus a recall-leaning operating point means a noticeable false-positive rate.
 
 ---
-
-> Coursework only. Cardia is a learning artefact, not a medical device.
