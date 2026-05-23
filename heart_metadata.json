@@ -1,0 +1,153 @@
+{
+  "project": "Heart Attack Risk Predictor",
+  "student": "Habiba Mohamed Hassan",
+  "student_id": "2210019322",
+  "dataset": "CDC BRFSS 2022",
+  "rows": 328047,
+  "columns": 19,
+  "target": "HadHeartAttack",
+  "positive_class_rows": 17565,
+  "negative_class_rows": 310482,
+  "numeric_features": [
+    "AgeCategory",
+    "GeneralHealth",
+    "SmokerStatus",
+    "HadDiabetes",
+    "PhysicalHealthDays",
+    "MentalHealthDays",
+    "SleepHours",
+    "BMI"
+  ],
+  "binary_features": [
+    "Sex",
+    "PhysicalActivities",
+    "AlcoholDrinkers",
+    "HadAngina",
+    "HadStroke",
+    "HadCOPD",
+    "HadKidneyDisease",
+    "HadArthritis",
+    "DifficultyWalking",
+    "ChestScan"
+  ],
+  "feature_columns": [
+    "AgeCategory",
+    "GeneralHealth",
+    "SmokerStatus",
+    "HadDiabetes",
+    "PhysicalHealthDays",
+    "MentalHealthDays",
+    "SleepHours",
+    "BMI",
+    "Sex",
+    "PhysicalActivities",
+    "AlcoholDrinkers",
+    "HadAngina",
+    "HadStroke",
+    "HadCOPD",
+    "HadKidneyDisease",
+    "HadArthritis",
+    "DifficultyWalking",
+    "ChestScan"
+  ],
+  "encoders": {
+    "AGE_ORDER": [
+      "Age 18 to 24",
+      "Age 25 to 29",
+      "Age 30 to 34",
+      "Age 35 to 39",
+      "Age 40 to 44",
+      "Age 45 to 49",
+      "Age 50 to 54",
+      "Age 55 to 59",
+      "Age 60 to 64",
+      "Age 65 to 69",
+      "Age 70 to 74",
+      "Age 75 to 79",
+      "Age 80 or older"
+    ],
+    "AGE_MAP": {
+      "Age 18 to 24": 0,
+      "Age 25 to 29": 1,
+      "Age 30 to 34": 2,
+      "Age 35 to 39": 3,
+      "Age 40 to 44": 4,
+      "Age 45 to 49": 5,
+      "Age 50 to 54": 6,
+      "Age 55 to 59": 7,
+      "Age 60 to 64": 8,
+      "Age 65 to 69": 9,
+      "Age 70 to 74": 10,
+      "Age 75 to 79": 11,
+      "Age 80 or older": 12
+    },
+    "GEN_MAP": {
+      "Poor": 0,
+      "Fair": 1,
+      "Good": 2,
+      "Very good": 3,
+      "Excellent": 4
+    },
+    "SMOKE_MAP": {
+      "Never smoked": 0,
+      "Former smoker": 1,
+      "Current smoker - now smokes some days": 2,
+      "Current smoker - now smokes every day": 3
+    },
+    "DIABETES_MAP": {
+      "No": 0,
+      "No, pre-diabetes or borderline diabetes": 1,
+      "Yes, but only during pregnancy (female)": 1,
+      "Yes": 2
+    }
+  },
+  "defaults": {
+    "BMI": 27.5,
+    "SleepHours": 7,
+    "PhysicalHealthDays": 0,
+    "MentalHealthDays": 0
+  },
+  "model_results": [
+    {
+      "Model": "Gradient Boosting",
+      "Accuracy": 0.9501,
+      "Precision": 0.5784,
+      "Recall": 0.2499,
+      "F1": 0.349,
+      "ROC-AUC": 0.8969
+    },
+    {
+      "Model": "XGBoost",
+      "Accuracy": 0.8278,
+      "Precision": 0.2078,
+      "Recall": 0.7876,
+      "F1": 0.3288,
+      "ROC-AUC": 0.8944
+    },
+    {
+      "Model": "AdaBoost",
+      "Accuracy": 0.9494,
+      "Precision": 0.5578,
+      "Recall": 0.2693,
+      "F1": 0.3632,
+      "ROC-AUC": 0.8936
+    },
+    {
+      "Model": "Decision Tree",
+      "Accuracy": 0.7932,
+      "Precision": 0.1809,
+      "Recall": 0.811,
+      "F1": 0.2958,
+      "ROC-AUC": 0.8825
+    }
+  ],
+  "metrics": {
+    "best_model": "Gradient Boosting",
+    "best_threshold": 0.2799999999999999,
+    "accuracy": 0.9433775339125133,
+    "precision": 0.4727468969239072,
+    "recall": 0.4987190435525192,
+    "f1": 0.4853857875051946,
+    "roc_auc": 0.8969111212244861
+  }
+}
